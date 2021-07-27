@@ -73,4 +73,10 @@ export default {
 .welcome button {
   margin: 20px auto;
 }
+
+@media screen and (max-width: 400px) {
+  .welcome input {
+    width: 85%;
+  }
+}
 </style>
