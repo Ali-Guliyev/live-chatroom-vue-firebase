@@ -25,4 +25,10 @@ button {
   border: 0;
   border-radius: 20px;
   padding: 10px 20px;
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+
+button:hover {
+  background: #4fc7b1;
 }

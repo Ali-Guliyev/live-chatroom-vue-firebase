@@ -1,10 +1,14 @@
 <template>
-  <form>
+  <form @submit.prevent="handleSubmit">
     <textarea
+      maxlength="90"
       placeholder="Type a message and press enter to send..."
       v-model="message"
       @keydown.enter.prevent="handleSubmit"
     ></textarea>
+    <button class="sendMessage">
+      <img src="../assets/send.png" />
+    </button>
     <div class="error"></div>
   </form>
 </template>
@@ -42,6 +46,7 @@ export default {
 <style scoped>
 form {
   margin: 10px;
+  display: flex;
 }
 textarea {
   width: 100%;
@@ -53,5 +58,21 @@ textarea {
   border-radius: 20px;
   font-family: inherit;
   outline: none;
+  resize: none;
+}
+
+button.sendMessage img {
+  width: 30px;
+  height: 25px;
+}
+
+button.sendMessage img::selection {
+  background: none;
+}
+
+button.sendMessage {
+  padding: 10px 5px 10px 12px;
+  border-radius: 50%;
+  height: 100%;
 }
 </style>
