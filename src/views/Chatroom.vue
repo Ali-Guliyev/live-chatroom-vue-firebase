@@ -1,13 +1,13 @@
 <template>
-  <div class="container">
+  <div class="container chatroom">
     <Navbar />
-    <ChatWindow />
-    <NewChatForm />
+    <ChatWindow :isMessageSending="isMessageSending" />
+    <NewChatForm @isMessageSending="isMessageSending = $event" />
   </div>
 </template>
 
 <script>
-import { watch } from "vue";
+import { ref, watch } from "vue";
 import Navbar from "../components/Navbar.vue";
 import getUser from "../composables/getUser";
 import { useRouter } from "vue-router";
@@ -23,12 +23,15 @@ export default {
   setup() {
     const { user } = getUser();
     const router = useRouter();
+    const isMessageSending = ref(false);
 
     watch(user, () => {
       if (!user.value) {
         router.push({ name: "Welcome" });
       }
     });
+
+    return { isMessageSending };
   },
 };
 </script>
@@ -51,5 +54,8 @@ nav p {
 nav p.email {
   font-size: 14px;
   color: #999;
+}
+.container.chatroom {
+  padding-bottom: 2px;
 }
 </style>

@@ -3,12 +3,12 @@ import "firebase/firestore";
 import "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDGFcW-VHptnDZZ71n5oebCsOewxOaPshY",
-  authDomain: "vue-firebase-sites-48878.firebaseapp.com",
-  projectId: "vue-firebase-sites-48878",
-  storageBucket: "vue-firebase-sites-48878.appspot.com",
-  messagingSenderId: "1059987544565",
-  appId: "1:1059987544565:web:69371967158bdcec41a8bc",
+  apiKey: "AIzaSyBE87WWYYMY2ka0zDIVsTzC7mgCAayeRO0",
+  authDomain: "chatroom-57.firebaseapp.com",
+  projectId: "chatroom-57",
+  storageBucket: "chatroom-57.appspot.com",
+  messagingSenderId: "7982707046",
+  appId: "1:7982707046:web:90e80017cbb5600b8ad8a7",
 };
 
 // init fireabase

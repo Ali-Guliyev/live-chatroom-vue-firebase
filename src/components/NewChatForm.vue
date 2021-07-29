@@ -1,16 +1,25 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <textarea
-      maxlength="90"
+      :maxlength="messageLimit"
       placeholder="Type a message and press enter to send..."
       v-model="message"
       @keydown.enter.prevent="handleSubmit"
     ></textarea>
+
     <button class="sendMessage">
       <img src="../assets/send.png" />
     </button>
-    <div class="error"></div>
   </form>
+  <div class="messageWarningContainer">
+    <div class="icon warning" v-if="message.length >= messageLimit">
+      Reached the limit of characters
+    </div>
+    <div class="icon warning" v-if="onlySpacesInMessage">
+      Please enter the text to send
+    </div>
+    <div class="icon error" v-if="error">{{ error }}</div>
+  </div>
 </template>
 
 <script>
@@ -20,10 +29,12 @@ import useCollection from "../composables/useCollection";
 import { timestamp } from "../firebase/config";
 
 export default {
-  setup() {
+  setup(props, context) {
     const message = ref("");
     const { user } = getUser();
     const { addDoc, error } = useCollection("messages");
+    const messageLimit = ref(90);
+    const onlySpacesInMessage = ref(false);
 
     const handleSubmit = async () => {
       const chat = {
@@ -32,13 +43,30 @@ export default {
         createdAt: timestamp(),
       };
 
-      await addDoc(chat);
+      // Check if there are not spaces in message input
+      if (message.value.replace(/\s/g, "").length) {
+        context.emit("isMessageSending", true);
+        await addDoc(chat).then(() => {
+          context.emit("isMessageSending", false);
+        });
+
+        onlySpacesInMessage.value = false;
+      } else {
+        onlySpacesInMessage.value = true;
+      }
+
       if (!error.value) {
         message.value = "";
       }
     };
 
-    return { message, handleSubmit, error };
+    return {
+      message,
+      handleSubmit,
+      error,
+      messageLimit,
+      onlySpacesInMessage,
+    };
   },
 };
 </script>
@@ -51,7 +79,6 @@ form {
 textarea {
   width: 100%;
   max-width: 100%;
-  margin-bottom: 6px;
   padding: 10px;
   box-sizing: border-box;
   border: 0;
@@ -73,6 +100,17 @@ button.sendMessage img::selection {
 button.sendMessage {
   padding: 10px 5px 10px 12px;
   border-radius: 50%;
-  height: 100%;
+}
+
+.messageWarningContainer {
+  margin-left: 20px;
+}
+
+.messageWarningContainer .warning {
+  margin-bottom: 10px;
+}
+
+.messageWarningContainer .error {
+  margin-bottom: 20px;
 }
 </style>

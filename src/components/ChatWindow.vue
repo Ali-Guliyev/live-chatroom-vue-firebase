@@ -8,16 +8,25 @@
         <span class="message">{{ doc.message }}</span>
       </div>
     </div>
+    <div v-else>
+      <Spinner width="70" />
+    </div>
+    <div v-if="isMessageSending">
+      <Spinner width="30" />
+    </div>
   </div>
 </template>
 
 <script>
 import getCollection from "../composables/getCollection";
+import Spinner from "./Spinner.vue";
 import { formatDistanceToNow } from "date-fns";
-import { computed, onUpdated, ref } from "@vue/runtime-core";
+import { computed, onUpdated, ref, watch, watchEffect } from "vue";
 
 export default {
-  setup() {
+  props: ["isMessageSending"],
+  components: { Spinner },
+  setup(props) {
     const { error, documents } = getCollection("messages");
 
     const formattedDocuments = computed(() => {

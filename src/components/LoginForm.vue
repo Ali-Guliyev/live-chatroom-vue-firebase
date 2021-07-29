@@ -2,13 +2,15 @@
   <form @submit.prevent="handleSubmit">
     <input type="email" required placeholder="email" v-model="email" />
     <input type="password" required placeholder="password" v-model="password" />
-    <div class="error">{{ error }}</div>
+    <div class="icon error" v-if="error">
+      {{ error }}
+    </div>
     <button>Login</button>
   </form>
 </template>
 
 <script>
-import { ref } from "@vue/reactivity";
+import { ref } from "vue";
 import useLogin from "../composables/useLogin";
 export default {
   setup(props, context) {
